@@ -2,21 +2,19 @@
 module deccounter (
 	input clk,
 	input reset,
-    input ena,
-  	input clear,
-    output [3:0] dec_out
+  input ena,
+  input clear,
+  output [3:0] dec_out
 );
   reg [3:0] dec_out_reg;
   always@(posedge clk) begin
     if(reset) dec_out_reg <= 4'd0;
     else begin 
       if(ena) begin 
-        if(clear) dec_out_reg <= 4'd0;
-        else if(dec_out_reg == 4'd9) dec_out_reg <= 4'd0;
-        else dec_out_reg <= dec_out_reg + 4'd1;
+          if((clear) || (dec_out_reg == 4'd9)) dec_out_reg <= 4'd0;
+          else dec_out_reg <= dec_out_reg + 4'd1;
       end
-      else dec_out_reg <= dec_out_reg;
-       
+      else dec_out_reg <= dec_out_reg;   
     end
   end
   assign dec_out = dec_out_reg;
@@ -39,8 +37,7 @@ module twodigitbcd (
         	clear = 1'b1;
       end
       else clear = 1'b0;
-      //ena_1 = (bcd_out [3:0] == 4'd9)? 1'b1 : 1'b0;
-      ena_1 = (toggle)? 1'b1: 1'b0;
+      ena_1 = toggle;
     end
 endmodule
 
