@@ -10,6 +10,7 @@ module top_module (
     parameter [1:0] ABOVES3 = 2'b00, BTWS32 = 2'b01, BTWS21 = 2'b10, BS1 = 2'b11; 
     reg [1:0] state, next_state;
     always@(*) begin
+        next_state = state;
         case(state)
             ABOVES3: begin
                 if(s == 3'b011) next_state = BTWS32;
@@ -29,6 +30,7 @@ module top_module (
                 if(s == 3'b001) next_state = BTWS21;
                 else next_state = BS1;		//000
             end 
+            //default: next_state = 'x;
         endcase
     end
     
@@ -41,7 +43,7 @@ module top_module (
         else begin
             //prev_state <= state;
             state <= next_state;
-            dfr <= (state < next_state)? 1'b1 : ((state > next_state)? 1'b0: dfr);
+            dfr <= (state < next_state)? 1'b1 : ((state > next_state)? 1'b0: dfr);	//since had to store previous value
         end
     end
     
